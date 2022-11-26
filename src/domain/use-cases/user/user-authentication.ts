@@ -19,17 +19,22 @@ export class UserAuthenticationUseCase implements UserAuthenticationUseCaseAbstr
   ) {}
 
   async handle({ email, password }: Input): Promise<Output> {
-    const user = await this.userRepos.loadAccountByEmail(email);
-    if (user) {
-      const isValidPassword = await this.hash.compare({ value: password, hash: user.password });
-      if (isValidPassword) {
-        const accessToken = this.jwtService.sign(user?.id);
-        return {
-          user,
-          accessToken,
-        };
+    try {
+      const user = await this.userRepos.loadAccountByEmail(email);
+      if (user) {
+        const isValidPassword = await this.hash.compare({ value: password, hash: user.password });
+        if (isValidPassword) {
+          const accessToken = this.jwtService.sign(user?.id);
+          return {
+            user,
+            accessToken,
+          };
+        }
       }
+      return this.exceptionService.UnauthorizedException({ message: 'Invalid credentials', code: '401' });
+    } catch (error) {
+      console.log(error);
+      return this.exceptionService.UnauthorizedException({ message: 'Invalid credentials', code: '401' });
     }
-    return this.exceptionService.UnauthorizedException({ message: 'Invalid credentials', code: '401' });
   }
 }

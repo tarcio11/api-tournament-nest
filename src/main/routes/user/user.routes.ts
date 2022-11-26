@@ -6,9 +6,10 @@ import {
   HttpRestApiResponseUser,
   HttpRestApiModelCreateUserBody,
 } from '@/main/docs/user';
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from '@/infra/guards/jwt.guard';
 
 @ApiTags('Usuários')
 @Controller()
@@ -27,6 +28,7 @@ export class UserRoutes {
   }
 
   @Get('/users')
+  @UseGuards(JwtGuard)
   @ApiOperation({
     summary: 'Listar todos os usuários',
   })
