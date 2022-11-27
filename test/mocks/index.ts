@@ -1,1 +1,1 @@
-export * from './pg-user-mock';
+export * from './entities/mock-user-mock';

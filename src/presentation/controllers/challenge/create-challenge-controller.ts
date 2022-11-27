@@ -10,12 +10,21 @@ export class CreateChallengeController extends Controller {
     super();
   }
 
-  async perform(user_id: string): Promise<Controller.Output> {
+  async perform(input: CreateChallengeController.Input): Promise<Controller.Output> {
+    console.log('input', input);
+
     try {
-      await this.service.handle(user_id);
+      await this.service.handle(input);
       return noContent();
     } catch (error: any) {
       throw error;
     }
   }
+}
+
+namespace CreateChallengeController {
+  export type Input = {
+    user_id: string;
+    challenged_id: string;
+  };
 }

@@ -4,6 +4,7 @@ import { UserRepositoryAbstract } from '@/domain/contracts/repos/user-account';
 import { IException } from '@/domain/exceptions';
 import { UserAuthenticationUseCase } from '@/domain/use-cases/user';
 import { mockUserInput } from '@/test/mocks';
+import MockDate from 'mockdate';
 
 type Input = { email: string; password: string };
 
@@ -22,6 +23,14 @@ describe('UserAuthenticationUseCase', () => {
     jwtService = mock<JwtServiceAbstract>();
     exceptionService = mock<IException>();
     sut = new UserAuthenticationUseCase(userRepos, hash, jwtService, exceptionService);
+  });
+
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
   });
 
   it('should return UnauthorizedException if user not found', async () => {

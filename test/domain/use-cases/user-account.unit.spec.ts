@@ -22,7 +22,7 @@ describe('UserAccount UseCase', () => {
 
   it('should call CheckAccountByEmailRepository with correct email', async () => {
     await sut.handle({ name: 'any_name', email: 'any_email', password: 'any_password' });
-    expect(userAccountRepos.checkByEmail).toHaveBeenCalledWith({ email: 'any_email' });
+    expect(userAccountRepos.checkByEmail).toHaveBeenCalledWith('any_email');
   });
 
   it('should throw if badRequestException returns true', async () => {

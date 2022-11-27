@@ -1,16 +1,14 @@
 import { JwtService } from '@/infra/gateways';
-
-jest.mock('jsonwebtoken', () => ({
-  sign(): string {
-    return 'any_hash';
-  },
-}));
+import { JwtService as Jwt } from '@nestjs/jwt';
+import { mock, MockProxy } from 'jest-mock-extended';
 
 describe('JwtService', () => {
   let service: JwtService;
+  let jwt: MockProxy<Jwt>;
 
   beforeEach(async () => {
-    service = new JwtService();
+    jwt = mock<Jwt>();
+    service = new JwtService(jwt);
   });
 
   it('should be defined', () => {
@@ -24,6 +22,7 @@ describe('JwtService', () => {
   });
 
   it('should return a valid id', async () => {
+    jwt.sign.mockReturnValueOnce('any_hash');
     const hash = service.sign('any_id');
     expect(hash).toBe('any_hash');
   });

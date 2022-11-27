@@ -1,4 +1,5 @@
-import { Controller, UserAuthenticationController } from '@/presentation/controllers';
+import { Controller } from '@/presentation/controllers';
+import { UserAuthenticationController } from '@/presentation/controllers/user';
 import { UserAuthenticationUseCaseAbstract } from '@/domain/use-cases';
 
 import { mock, MockProxy } from 'jest-mock-extended';

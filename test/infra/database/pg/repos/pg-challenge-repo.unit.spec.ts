@@ -1,9 +1,10 @@
 import { PgChallengeEntity, PgUserEntity } from '@/infra/database/pg/entities';
 import { PgChallengeRepo } from '@/infra/database/pg/repos';
-import { Challenge } from '@/domain/entities';
+import { Challenge, User } from '@/domain/entities';
 import { PgConnection } from '@/infra/database/pg/repos/helpers';
 import { mockUserInput } from '@/test/mocks';
 import { makeFakeDb } from '@/test/mocks/setup-db';
+import { mockChallengeInput } from '@/test/mocks/entities/mock-challenge-mock';
 import { getRepository, Repository } from 'typeorm';
 import { IBackup } from 'pg-mem';
 
@@ -36,15 +37,16 @@ describe('PgChallengeRepo', () => {
       const userMocked = mockUserInput();
       const pgUser = await pgUserRepo.save(userMocked);
 
-      const pgChallenge = new Challenge();
+      const user = new User(pgUser);
+      const challenge = new Challenge(mockChallengeInput());
+      user.createChallenge(challenge);
       const pgUserFound = await pgUserRepo.findOne({ where: { id: pgUser.id }, relations: ['challenges'] });
-      pgUserFound?.challenges.push(pgChallenge);
 
       if (pgUserFound) {
-        await sut.add(pgUserFound);
+        await sut.add(user);
       }
 
-      expect(pgUserFound?.challenges).toEqual([pgChallenge]);
+      expect(pgUserFound?.challenges).toEqual([challenge]);
     });
   });
 
@@ -53,9 +55,7 @@ describe('PgChallengeRepo', () => {
       const userMocked = mockUserInput();
       const pgUser = await pgUserRepo.save(userMocked);
 
-      const pgChallenge = new Challenge();
       const pgUserFound = await pgUserRepo.findOne({ where: { id: pgUser.id }, relations: ['challenges'] });
-      pgUserFound?.challenges.push(pgChallenge);
 
       if (pgUserFound) {
         await pgUserRepo.save(pgUserFound);

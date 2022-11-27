@@ -2,7 +2,6 @@ import { Controller } from '@/presentation/controllers';
 import { CreateUserController } from '@/presentation/controllers/user';
 import { AddUserAccountUseCaseAbstract } from '@/domain/use-cases';
 import { User } from '@/domain/entities';
-import { mockUserInput } from '../../mocks';
 import { mock, MockProxy } from 'jest-mock-extended';
 
 describe('CreateUserController', () => {
@@ -19,7 +18,7 @@ describe('CreateUserController', () => {
 
   beforeEach(() => {
     sut = new CreateUserController(createUser);
-    httpRequest = mockUserInput();
+    httpRequest = userInput;
   });
 
   test('should CreateUserController extends Controller', async () => {

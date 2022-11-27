@@ -21,7 +21,7 @@ describe('User Domain', () => {
 
   beforeEach(() => {
     USER_MOCK = new User(mockUserEntity());
-    CHALLENGE_MOCK = new Challenge();
+    CHALLENGE_MOCK = new Challenge({ challenged_id: 'any_challenged_id' });
   });
 
   afterAll(() => {
@@ -34,7 +34,7 @@ describe('User Domain', () => {
   });
 
   it('should create an user with challenges', () => {
-    const challenge = new Challenge();
+    const challenge = new Challenge({ challenged_id: 'any_challenged_id' });
 
     USER_MOCK.createChallenge(challenge);
 
@@ -42,17 +42,17 @@ describe('User Domain', () => {
   });
 
   it('should find a challenge by id', () => {
-    const challenge = new Challenge();
+    const challenge = new Challenge({ id: 'any_id', challenged_id: 'any_challenged_id' });
 
     USER_MOCK.createChallenge(challenge);
 
-    const foundChallenge = USER_MOCK.findChallenge(challenge.id);
+    const foundChallenge = USER_MOCK.findChallenge('any_id');
 
     expect(foundChallenge).toEqual(CHALLENGE_MOCK);
   });
 
   it('should return undefined if challenge not found', () => {
-    const challenge = new Challenge();
+    const challenge = new Challenge({ challenged_id: 'any_challenged_id' });
 
     USER_MOCK.createChallenge(challenge);
 
@@ -75,7 +75,7 @@ describe('User Domain', () => {
   });
 
   it('should return an array of challenges', () => {
-    const challenge = new Challenge();
+    const challenge = new Challenge({ challenged_id: 'any_challenged_id' });
 
     USER_MOCK.createChallenge(challenge);
     USER_MOCK.createChallenge(CHALLENGE_MOCK);

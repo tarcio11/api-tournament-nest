@@ -1,17 +1,7 @@
-import { Service } from '@/domain/use-cases/abstract-cases';
+import { ListUserAccountUseCase } from '@/domain/use-cases/user';
 import { UserRepositoryAbstract } from '@/domain/contracts/repos/user-account';
-import { Injectable } from '@nestjs/common';
-import { User, UserData } from '@/domain/entities';
+import { User } from '@/domain/entities';
 import { mock, MockProxy } from 'jest-mock-extended';
-
-@Injectable()
-export class ListUserAccountUseCase implements Service {
-  constructor(private readonly userRepos: UserRepositoryAbstract) {}
-
-  async handle(): Promise<UserData[]> {
-    return this.userRepos.findAll();
-  }
-}
 
 describe('ListUserAccountUseCase', () => {
   let userAccountRepos: MockProxy<UserRepositoryAbstract>;

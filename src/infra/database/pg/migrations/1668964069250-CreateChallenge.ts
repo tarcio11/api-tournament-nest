@@ -23,6 +23,10 @@ export class CreateChallenge1668964069250 implements MigrationInterface {
             type: 'uuid',
           },
           {
+            name: 'challenged_id',
+            type: 'uuid',
+          },
+          {
             name: 'request_date',
             type: 'timestamp',
             default: 'now()',
@@ -46,6 +50,18 @@ export class CreateChallenge1668964069250 implements MigrationInterface {
       new TableForeignKey({
         name: 'ChallengeChallenger',
         columnNames: ['user_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'challenges',
+      new TableForeignKey({
+        name: 'ChallengeChallenged',
+        columnNames: ['challenged_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
         onDelete: 'SET NULL',

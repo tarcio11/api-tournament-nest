@@ -1,7 +1,7 @@
 import { makeFakeDb } from '@/../test/mocks/setup-db';
 import { PgUserEntity } from '@/infra/database/pg/entities';
 import { PgUserRepo } from '@/infra/database/pg/repos';
-import { mockUserInput } from '@/test/mocks/pg-user-mock';
+import { mockUserInput } from '@/../test/mocks/entities/mock-user-mock';
 import { PgConnection } from '@/infra/database/pg/repos/helpers';
 import { PgChallengeEntity } from '@/infra/database/pg/entities';
 

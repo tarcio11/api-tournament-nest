@@ -15,6 +15,8 @@ export class PgChallengeEntity {
   id: string;
   @Column()
   status: string;
+  @Column()
+  challenged_id: string;
   @CreateDateColumn()
   request_date: Date;
   @CreateDateColumn()
