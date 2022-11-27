@@ -5,14 +5,12 @@ import { makeFakeDb } from '@/test/mocks/setup-db';
 import { mockUserInput } from '@/test/mocks';
 
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepository, Repository } from 'typeorm';
 import { INestApplication } from '@nestjs/common';
 import { IBackup } from 'pg-mem';
 import * as request from 'supertest';
 import MockDate from 'mockdate';
 
 describe('/users', () => {
-  let pgUserAccountRepo: Repository<PgUserEntity>;
   let app: INestApplication;
   let connection: PgConnection;
   let backup: IBackup;
@@ -22,7 +20,6 @@ describe('/users', () => {
     connection = PgConnection.getInstance();
     const db = await makeFakeDb([PgUserEntity, PgChallengeEntity]);
     backup = db.backup();
-    pgUserAccountRepo = getRepository(PgUserEntity);
   });
 
   beforeEach(async () => {
@@ -57,10 +54,29 @@ describe('/users', () => {
 
   describe('GET', () => {
     it('/api/v1/users', async () => {
-      await pgUserAccountRepo.save(mockUserInput());
-      const { status, body } = await request(app.getHttpServer()).get('/users');
+      await request(app.getHttpServer()).post('/users').send(mockUserInput());
+      const { body: userLogged } = await request(app.getHttpServer())
+        .post('/users/signin')
+        .send({ email: 'any_email@mail.com', password: 'any_password' });
+
+      const { status, body } = await request(app.getHttpServer())
+        .get('/users')
+        .set({ Authorization: `Bearer ${userLogged.accessToken}` });
       expect(status).toBe(200);
       expect(body).toHaveLength(1);
+    });
+
+    it('/api/v1/users/me', async () => {
+      const { body: newUser } = await request(app.getHttpServer()).post('/users').send(mockUserInput());
+      const { body: userLogged } = await request(app.getHttpServer())
+        .post('/users/signin')
+        .send({ email: 'any_email@mail.com', password: 'any_password' });
+
+      const { status, body } = await request(app.getHttpServer())
+        .get('/users/me')
+        .set({ Authorization: `Bearer ${userLogged.accessToken}` });
+      expect(status).toBe(200);
+      expect(body.id).toBe(newUser.id);
     });
   });
 });

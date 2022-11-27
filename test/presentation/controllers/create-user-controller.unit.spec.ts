@@ -1,4 +1,5 @@
-import { Controller, CreateUserController } from '@/presentation/controllers';
+import { Controller } from '@/presentation/controllers';
+import { CreateUserController } from '@/presentation/controllers/user';
 import { AddUserAccountUseCaseAbstract } from '@/domain/use-cases';
 import { User } from '@/domain/entities';
 import { mockUserInput } from '../../mocks';

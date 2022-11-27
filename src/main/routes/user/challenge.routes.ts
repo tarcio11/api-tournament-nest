@@ -1,4 +1,4 @@
-import { CreateChallengeController } from '@/presentation/controllers/challenge/create-challenge-controller';
+import { CreateChallengeController } from '@/presentation/controllers/challenge';
 import { adaptNestRouter } from '@/main/adapters/nest-router-adapter';
 import { Controller, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { Response, RequestHandler } from 'express';

@@ -13,3 +13,7 @@ export abstract class CreateChallengeUseCaseAbstract<Input = any, Output = any> 
 export abstract class UserAuthenticationUseCaseAbstract<Input = any, Output = any> {
   abstract handle: (input: Input) => Promise<Output>;
 }
+
+export abstract class ShowProfileUseCaseAbstract<Input = any, Output = any> {
+  abstract handle: (input: Input) => Promise<Output>;
+}

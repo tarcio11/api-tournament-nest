@@ -75,4 +75,18 @@ describe('PgUserRepo', () => {
       expect(account).toBeUndefined();
     });
   });
+
+  describe('findOne()', () => {
+    it('should return a user on success', async () => {
+      const user = await pgUserRepo.save(mockUserInput());
+      const userFound = await sut.findOne(user.id);
+
+      expect(userFound).toEqual(user);
+    });
+
+    it('should return undefined if user does not exists', async () => {
+      const userFound = await sut.findOne('1');
+      expect(userFound).toBeUndefined();
+    });
+  });
 });

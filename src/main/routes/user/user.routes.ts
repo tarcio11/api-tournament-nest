@@ -1,4 +1,9 @@
-import { CreateUserController, ListUsersController, UserAuthenticationController } from '@/presentation/controllers';
+import {
+  CreateUserController,
+  ListUsersController,
+  UserAuthenticationController,
+  ShowProfileController,
+} from '@/presentation/controllers/user';
 import { adaptNestRouter } from '@/main/adapters/nest-router-adapter';
 import { UserAuthenticationValidation, UserValidation } from '@/main/validation';
 import {
@@ -18,6 +23,7 @@ export class UserRoutes {
     private readonly createUserController: CreateUserController,
     private readonly listUserController: ListUsersController,
     private readonly userAuthenticationController: UserAuthenticationController,
+    private readonly showProfileController: ShowProfileController,
   ) {}
 
   @Post('/users')
@@ -42,5 +48,15 @@ export class UserRoutes {
   @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponseUser })
   async signin(@Body() body: UserAuthenticationValidation, @Res() response: Response): Promise<Response> {
     return adaptNestRouter(this.userAuthenticationController)(body, response);
+  }
+
+  @Get('/users/me')
+  @UseGuards(JwtGuard)
+  @ApiOperation({
+    summary: 'Mostrar perfil do usuário',
+  })
+  @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponseUser })
+  async me(@Req() request, @Res() response: Response): Promise<Response> {
+    return adaptNestRouter(this.showProfileController)(request.user, response);
   }
 }

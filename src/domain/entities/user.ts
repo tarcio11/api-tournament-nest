@@ -25,6 +25,8 @@ export class User {
     this.email = data.email;
     this.password = data.password;
     this.challenges = data.challenges;
+    this.created_at = data.created_at;
+    this.updated_at = data.updated_at;
   }
 
   createChallenge(challenge: Challenge): void {

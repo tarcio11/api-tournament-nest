@@ -5,6 +5,7 @@ export abstract class UserRepositoryAbstract {
   abstract checkByEmail: (email: string) => Promise<boolean>;
   abstract findAll: () => Promise<UserData[]>;
   abstract loadAccountByEmail: (email: string) => Promise<userModel | undefined>;
+  abstract findOne: (id: string) => Promise<UserData | undefined>;
 }
 
 export type userModel = {
