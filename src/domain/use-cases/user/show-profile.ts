@@ -12,7 +12,6 @@ export class ShowProfileUseCase implements ShowProfileUseCaseAbstract {
 
   async handle({ id }: Input): Promise<Output> {
     const user = await this.userRepos.findOne(id);
-
     if (user) {
       const userDomain = new User(user);
       return userDomain;

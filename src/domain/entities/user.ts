@@ -40,4 +40,11 @@ export class User {
   findChallenges(): Challenge[] | undefined {
     return this.challenges;
   }
+
+  updateChallenge(challenge_id: string, data: { status: string }): void {
+    const challenge = this.findChallenge(challenge_id);
+    if (challenge) {
+      challenge.status = data.status;
+    }
+  }
 }

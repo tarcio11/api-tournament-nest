@@ -1,11 +1,11 @@
 import { ChallengeModule } from '@/domain/use-cases/challenge/challenge.module';
-import { CreateChallengeController } from '@/presentation/controllers/challenge/create-challenge-controller';
+import { CreateChallengeController, UpdateChallengeController } from '@/presentation/controllers/challenge';
 
 import { Module } from '@nestjs/common';
 
 @Module({
   imports: [ChallengeModule],
-  exports: [CreateChallengeController],
-  providers: [CreateChallengeController],
+  exports: [CreateChallengeController, UpdateChallengeController],
+  providers: [CreateChallengeController, UpdateChallengeController],
 })
 export class CreateChallengeControllerModule {}

@@ -1,5 +1,5 @@
 import { Controller } from '@/presentation/controllers';
-import { noContent } from '@/presentation/helpers/http';
+import { noContent, unauthorized } from '@/presentation/helpers/http';
 import { CreateChallengeUseCaseAbstract } from '@/domain/use-cases';
 
 import { Injectable } from '@nestjs/common';
@@ -11,12 +11,11 @@ export class CreateChallengeController extends Controller {
   }
 
   async perform(input: CreateChallengeController.Input): Promise<Controller.Output> {
-    console.log('input', input);
-
     try {
       await this.service.handle(input);
       return noContent();
     } catch (error: any) {
+      if (error.response.code === '401') return unauthorized(error);
       throw error;
     }
   }

@@ -7,6 +7,6 @@ export class JwtService implements JwtServiceAbstract {
   constructor(private readonly jwtService: jwt) {}
 
   sign(plaintext: string): string {
-    return this.jwtService.sign({ id: plaintext }, { expiresIn: '60s' });
+    return this.jwtService.sign({ id: plaintext }, { expiresIn: '1d' });
   }
 }
