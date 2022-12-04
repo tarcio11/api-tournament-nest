@@ -17,7 +17,7 @@ export class PgUserRepo extends PgRepository implements UserRepositoryAbstract {
     return pgUserRepository.findOne({ where: { email } }).then((user) => !!user);
   }
 
-  async findAll(): Promise<UserData[]> {
+  async findAll(): Promise<any> {
     const pgUserRepository = this.getRepository(PgUserEntity);
     return pgUserRepository.find();
   }

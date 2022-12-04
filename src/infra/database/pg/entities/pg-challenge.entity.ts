@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { PgUserEntity } from '@/infra/database/pg/entities';
+import { PgMatchEntity } from './pg-match.entity';
 
 @Entity({ name: 'challenges' })
 export class PgChallengeEntity {
@@ -29,4 +31,7 @@ export class PgChallengeEntity {
   @ManyToOne(() => PgUserEntity, (user) => user.challenges)
   @JoinColumn({ name: 'user_id' })
   user?: PgUserEntity;
+
+  @OneToMany(() => PgMatchEntity, (match) => match.challenge, { cascade: true })
+  matches?: PgMatchEntity[];
 }

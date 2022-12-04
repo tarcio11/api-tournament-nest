@@ -12,7 +12,7 @@ export class PgChallengeRepo extends PgRepository implements ChallengeRepository
     await pgUserRepository.save(user);
   }
 
-  async findChallengesByUser(user_id: string): Promise<PgUserEntity | undefined> {
+  async findChallengesByUser(user_id: string): Promise<any> {
     const pgUserRepository = this.getRepository(PgUserEntity);
     const pgChallengeEntity = this.getRepository(PgChallengeEntity);
     const pgUser = await pgUserRepository.findOne({ where: { id: user_id }, relations: ['challenges'] });
@@ -37,8 +37,8 @@ export class PgChallengeRepo extends PgRepository implements ChallengeRepository
     return pgChallengeRepository.find();
   }
 
-  async findOne(id: string): Promise<Challenge | undefined> {
+  async findOne(id: string): Promise<any> {
     const pgChallengeRepository = this.getRepository(PgChallengeEntity);
-    return pgChallengeRepository.findOne({ where: { id } });
+    return pgChallengeRepository.findOne({ where: { id }, relations: ['matches'] });
   }
 }

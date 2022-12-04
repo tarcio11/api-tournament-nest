@@ -9,9 +9,11 @@ export class UpdateChallengeUseCase implements UpdateChallengeUseCaseAbstract {
   constructor(private readonly challengeRepos: ChallengeRepositoryAbstract) {}
 
   async handle({ challenge }: Input): Promise<void> {
+    console.log('challenge', challenge);
+
     const challengeFound = await this.challengeRepos.findOne(challenge.id);
     if (challengeFound) {
-      challengeFound.status = 'ACCEPTED';
+      challengeFound.status = challenge.status;
       await this.challengeRepos.update(challengeFound);
     }
   }

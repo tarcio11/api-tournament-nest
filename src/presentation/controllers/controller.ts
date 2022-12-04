@@ -7,6 +7,8 @@ export abstract class Controller {
     try {
       return await this.perform(input);
     } catch (error) {
+      console.log('error', error);
+
       return serverError(error as Error);
     }
   }
