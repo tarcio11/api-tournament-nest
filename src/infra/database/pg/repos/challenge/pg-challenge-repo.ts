@@ -1,7 +1,7 @@
 import { ChallengeRepositoryAbstract } from '@/domain/contracts/repos/challenge';
 import { PgRepository } from '@/infra/database/pg/repos/repository';
 import { PgChallengeEntity, PgUserEntity } from '@/infra/database/pg/entities';
-import { UserData } from '@/domain/entities';
+import { Challenge, UserData } from '@/domain/entities';
 
 import { Injectable } from '@nestjs/common';
 
@@ -27,13 +27,18 @@ export class PgChallengeRepo extends PgRepository implements ChallengeRepository
     return pgUser.challenges ? { ...pgUser } : pgUser;
   }
 
-  async update(user: UserData): Promise<void> {
-    const pgUserRepository = this.getRepository(PgUserEntity);
-    await pgUserRepository.save(user);
+  async update(challenge: Challenge): Promise<void> {
+    const pgChallengeEntity = this.getRepository(PgChallengeEntity);
+    await pgChallengeEntity.save(challenge);
   }
 
   async findAll(): Promise<any> {
     const pgChallengeRepository = this.getRepository(PgChallengeEntity);
     return pgChallengeRepository.find();
+  }
+
+  async findOne(id: string): Promise<Challenge | undefined> {
+    const pgChallengeRepository = this.getRepository(PgChallengeEntity);
+    return pgChallengeRepository.findOne({ where: { id } });
   }
 }

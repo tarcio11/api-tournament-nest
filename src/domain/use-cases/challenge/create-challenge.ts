@@ -24,6 +24,9 @@ export class CreateChallengeUseCase implements CreateChallengeUseCaseAbstract {
           code: '401',
         });
       }
+
+      console.log(challenged_id);
+
       newUser.createChallenge(new Challenge({ challenged_id }));
       await this.challengeRepos.add(newUser);
     }
