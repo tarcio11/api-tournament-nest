@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUser1668541899441 implements MigrationInterface {
+export class CreateRanking1670161805073 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'ranking',
         columns: [
           {
             name: 'id',
@@ -15,21 +14,16 @@ export class CreateUser1668541899441 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'name',
-            type: 'varchar',
+            name: 'user_id',
+            type: 'uuid',
           },
           {
-            name: 'email',
-            type: 'varchar',
+            name: 'points',
+            type: 'integer',
           },
           {
-            name: 'password',
+            name: 'event',
             type: 'varchar',
-          },
-          {
-            name: 'avatar',
-            type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'created_at',
@@ -42,11 +36,21 @@ export class CreateUser1668541899441 implements MigrationInterface {
             default: 'now()',
           },
         ],
+        foreignKeys: [
+          {
+            name: 'RankingUser',
+            referencedTableName: 'users',
+            referencedColumnNames: ['id'],
+            columnNames: ['user_id'],
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('ranking');
   }
 }

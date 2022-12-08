@@ -33,7 +33,6 @@ export class UserAuthenticationUseCase implements UserAuthenticationUseCaseAbstr
       }
       return this.exceptionService.UnauthorizedException({ message: 'Invalid credentials', code: '401' });
     } catch (error) {
-      console.log(error);
       return this.exceptionService.UnauthorizedException({ message: 'Invalid credentials', code: '401' });
     }
   }

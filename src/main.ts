@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/main/factories';
 import { PgConnection } from '@/infra/database/pg/repos/helpers/connection';
@@ -7,6 +8,7 @@ import { ResponseInterceptor } from '@/infra/common/interceptors/response.interc
 import { LoggingInterceptor } from '@/infra/common/interceptors/logger.interceptor';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { env } from '@/main/config/env';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {});
@@ -32,7 +34,7 @@ async function bootstrap() {
   PgConnection.getInstance()
     .connect()
     .then(async () => {
-      await app.listen(3000);
+      await app.listen(env.port);
     })
     .catch(console.error);
 }

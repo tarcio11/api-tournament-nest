@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { Hash, JwtService } from '@/infra/gateways';
-import { Hasher, JwtServiceAbstract } from '@/domain/contracts/gateways';
+import { Hash, JwtService, StorageProvider } from '@/infra/gateways';
+import { Hasher, JwtServiceAbstract, StorageProviderAbstract } from '@/domain/contracts/gateways';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategyService } from '../strategies/jwt-strategy.service';
+import { env } from '@/main/config/env';
 
 @Module({
   imports: [
     JwtModule.register({
-      secret: 'secret',
+      secret: env.jwtSecret,
     }),
   ],
   providers: [
@@ -16,7 +17,9 @@ import { JwtStrategyService } from '../strategies/jwt-strategy.service';
     JwtService,
     { provide: JwtServiceAbstract, useExisting: JwtService },
     JwtStrategyService,
+    StorageProvider,
+    { provide: StorageProviderAbstract, useExisting: StorageProvider },
   ],
-  exports: [Hasher, JwtServiceAbstract],
+  exports: [Hasher, JwtServiceAbstract, StorageProviderAbstract],
 })
 export class GatewaysModule {}

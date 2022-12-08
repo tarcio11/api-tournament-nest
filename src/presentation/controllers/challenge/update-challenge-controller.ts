@@ -11,8 +11,6 @@ export class UpdateChallengeController extends Controller {
   }
 
   async perform(input: UpdateChallengeController.Input): Promise<Controller.Output> {
-    console.log('input', input);
-
     try {
       await this.service.handle(input);
       return noContent();

@@ -3,6 +3,8 @@ import {
   ListUsersController,
   UserAuthenticationController,
   ShowProfileController,
+  FindByIdController,
+  UploadUserAvatarController,
 } from '@/presentation/controllers/user';
 import { adaptNestRouter } from '@/main/adapters/nest-router-adapter';
 import { UserAuthenticationValidation, UserValidation } from '@/main/validation';
@@ -11,10 +13,24 @@ import {
   HttpRestApiResponseUser,
   HttpRestApiModelCreateUserBody,
 } from '@/main/docs/user';
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Req,
+  Res,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '@/infra/guards/jwt.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Usuários')
 @Controller()
@@ -24,6 +40,8 @@ export class UserRoutes {
     private readonly listUserController: ListUsersController,
     private readonly userAuthenticationController: UserAuthenticationController,
     private readonly showProfileController: ShowProfileController,
+    private readonly findByIdController: FindByIdController,
+    private readonly uploadUserAvatarController: UploadUserAvatarController,
   ) {}
 
   @Post('/users')
@@ -58,5 +76,30 @@ export class UserRoutes {
   @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponseUser })
   async me(@Req() request, @Res() response: Response): Promise<Response> {
     return adaptNestRouter(this.showProfileController)(request.user, response);
+  }
+
+  @Get('/users/:id')
+  @UseGuards(JwtGuard)
+  @ApiOperation({
+    summary: 'Buscar usuário por ID',
+  })
+  @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponseUser })
+  async findById(@Param('id') id: string, @Res() response: Response): Promise<Response> {
+    return adaptNestRouter(this.findByIdController)({ id }, response);
+  }
+
+  @Patch('/users/me/avatar')
+  @UseInterceptors(FileInterceptor('avatar'))
+  @UseGuards(JwtGuard)
+  @ApiOperation({
+    summary: 'Atualizar avatar do usuário',
+  })
+  @ApiResponse({ status: HttpStatus.OK, type: HttpRestApiResponseUser })
+  async updateAvatar(
+    @UploadedFile() avatar: Express.Multer.File,
+    @Req() request,
+    @Res() response: Response,
+  ): Promise<any> {
+    return adaptNestRouter(this.uploadUserAvatarController)({ avatar, user: request.user }, response);
   }
 }

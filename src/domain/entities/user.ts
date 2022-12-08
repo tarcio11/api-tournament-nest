@@ -5,6 +5,7 @@ export type UserData = {
   name: string;
   email: string;
   password: string;
+  avatar?: string;
   challenges?: Challenge[];
   created_at?: Date;
   updated_at?: Date;
@@ -15,18 +16,13 @@ export class User {
   name: string;
   email: string;
   password: string;
+  avatar?: string;
   challenges?: Challenge[];
   created_at?: Date;
   updated_at?: Date;
 
   constructor(data: UserData) {
-    this.id = data?.id;
-    this.name = data.name;
-    this.email = data.email;
-    this.password = data.password;
-    this.challenges = data.challenges;
-    this.created_at = data.created_at;
-    this.updated_at = data.updated_at;
+    Object.assign(this, data);
   }
 
   createChallenge(challenge: Challenge): void {

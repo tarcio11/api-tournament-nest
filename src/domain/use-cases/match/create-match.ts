@@ -11,10 +11,15 @@ export class CreateMatchUseCase implements CreateMatchUseCaseAbstract {
   constructor(private readonly matchRepos: MatchRepositoryAbstract, private readonly exceptionService: IException) {}
 
   async handle({ challenge, match }: Input): Promise<void> {
-    if (challenge) {
+    if (challenge && challenge.status === 'ACCEPTED') {
       const newMatch = new Match(match);
       challenge.matches.push(newMatch);
       await this.matchRepos.add(challenge);
+    } else {
+      this.exceptionService.UnauthorizedException({
+        message: 'You must accept the challenge before playing',
+        code: '401',
+      });
     }
   }
 }
