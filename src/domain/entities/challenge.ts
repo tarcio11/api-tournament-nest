@@ -6,6 +6,7 @@ export type ChallengeData = {
   status?: string;
   request_date?: Date;
   challenged_id: string;
+  user_id?: string;
   matches?: Match[];
   created_at?: Date;
   updated_at?: Date;
@@ -14,6 +15,7 @@ export class Challenge {
   id?: string;
   status: string;
   request_date: Date;
+  user_id?: string;
   challenged_id: string;
   matches: Match[];
   created_at?: Date;
@@ -24,6 +26,7 @@ export class Challenge {
     this.request_date = new Date();
     this.matches = data.matches || [];
     this.challenged_id = data.challenged_id;
+    this.user_id = data.user_id;
     this.created_at = data.created_at;
     this.updated_at = data.updated_at;
   }

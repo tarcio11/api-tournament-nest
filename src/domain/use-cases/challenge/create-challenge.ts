@@ -13,7 +13,7 @@ export class CreateChallengeUseCase implements CreateChallengeUseCaseAbstract {
     private readonly exceptionService: IException,
   ) {}
 
-  async handle({ user_id, challenged_id }: Input): Promise<void> {
+  async handle({ user_id, challenged_id }: Input): Promise<any> {
     const user = await this.challengeRepos.findChallengesByUser(user_id);
     if (user) {
       const newUser = new User(user);
@@ -24,8 +24,8 @@ export class CreateChallengeUseCase implements CreateChallengeUseCaseAbstract {
           code: '401',
         });
       }
-      newUser.createChallenge(new Challenge({ challenged_id }));
-      await this.challengeRepos.add(newUser);
+      const challenge = new Challenge({ challenged_id, user_id });
+      return await this.challengeRepos.add(challenge);
     }
   }
 }
