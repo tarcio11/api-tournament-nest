@@ -2,7 +2,7 @@ import { Req } from '@nestjs/common';
 import { ConnectedSocket, WebSocketGateway } from '@nestjs/websockets';
 import * as ws from 'ws';
 
-export const server = new ws.Server({ port: 8080 });
+export const server = new ws.Server({ port: 8080, path: '/ws' });
 const connectedClients = new Map<string, ws.WebSocket>();
 
 @WebSocketGateway()
